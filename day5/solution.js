@@ -4,6 +4,9 @@ fs.readFile('./input.txt', (err, data) => {
   if (err) throw err;
   const input = ('' + data).split('\n');
   
+
+  // PART ONE
+
   //crates are separated from
   // index 1 - 5 - 9 - 13 - 17 - 21 - 25 - 29 - 33 
   let stacks = {
@@ -37,6 +40,7 @@ fs.readFile('./input.txt', (err, data) => {
     Instruction Example:
     'move 10 from 9 to 1' --> stacks[9].pop() & stacks[1].push() -> 10x
   */
+  //////////////////////////////////////////////////////
   const instructions = input.slice(10);
   for (let instruction of instructions) {
     const [times, popStack, pushStack] = instruction.match(/\d+/g).map(Number);
@@ -45,12 +49,34 @@ fs.readFile('./input.txt', (err, data) => {
       stacks[pushStack].push(item);
     }
   }
-
+  
   let topOfEachStack = '';
   for (let num in stacks) {
     topOfEachStack += stacks[num].pop()
   }
-
+  
   console.log(topOfEachStack); //-> JDTMRWCQJ
+  ///////////////////////////////////////////////////////
+  
+
+  // PART TWO -> comment out above code block to get topOfEachStack2
+  for (let instruction of instructions) {
+    const [times, popStack, pushStack] = instruction.match(/\d+/g).map(Number);
+    let tempCrate = [];
+    for (let i = 0; i < times; i++) {
+      let item = stacks[popStack].pop();
+      tempCrate.push(item);
+    }
+    tempCrate.reverse();
+    stacks[pushStack].push(...tempCrate);
+  }
+
+  let topOfEachStack2 = '';
+  for (let num in stacks) {
+    topOfEachStack2 += stacks[num].pop()
+  }
+  
+  console.log(topOfEachStack2); //-> VHJDDCWRD
+  
 
 })
