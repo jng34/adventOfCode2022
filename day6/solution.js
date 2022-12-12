@@ -8,7 +8,7 @@ fs.readFile('./input.txt', (err, data) => {
  // 0 1 2 3 4 5 6 7 8 9 10 11 12 13
  //           x
 
-  const findMarker = (buffer) => {
+  const startOfPacketMarker = (buffer) => {
     for (let i = 4; i < buffer.length; i++) {
       let seen = new Set();
       for (let j = i - 1; j >= i - 4; j--) {
@@ -22,5 +22,22 @@ fs.readFile('./input.txt', (err, data) => {
     } 
   }
   
-  console.log(findMarker(input))
+  console.log(startOfPacketMarker(input));
+
+
+  const startOfMessageMarker = (buffer) => {
+    for (let i = 14; i < buffer.length; i++) {
+      let seen = new Set();
+      for (let j = i - 1; j >= i - 14; j--) {
+        if (seen.has(buffer[j])) {
+          continue;
+        } else {
+          seen.add(buffer[j]);
+        }
+      }
+      if (seen.size == 14) return i;
+    } 
+  }
+  
+  console.log(startOfMessageMarker(input))
 })
